@@ -1,12 +1,22 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { TicketDetailForm } from "@/components/TicketDetailForm";
-import { TicketStatusBadge } from "@/components/TicketStatusBadge";
-import { TICKET_CATEGORY_LABELS, TICKET_PRIORITY_LABELS, Ticket } from "@/types/ticket";
+import { TicketStatusBadge, TicketPriorityBadge } from "@/components/TicketBadges";
+import { TICKET_CATEGORY_LABELS, Ticket } from "@/types/ticket";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString("pt-BR");
+}
+
+function Info({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="mb-4 last:mb-0">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className="mt-1 font-semibold text-foreground">{value}</div>
+    </div>
+  );
 }
 
 export default async function TicketDetailPage({
@@ -30,52 +40,55 @@ export default async function TicketDetailPage({
 
   return (
     <div>
-      <Link href="/painel" className="text-sm text-blue-600 hover:underline">
-        ← Voltar para a lista
+      <Link href="/painel" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+        <ArrowLeft size={15} />
+        Voltar para a lista
       </Link>
 
-      <div className="mt-4 flex items-start justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Chamado #{ticket.id.slice(0, 8)}</h1>
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <div>
+          <span className="text-xs font-bold text-primary">#{ticket.id.slice(0, 8)}</span>
+          <h1 className="mt-0.5 text-xl font-bold text-foreground">
+            {TICKET_CATEGORY_LABELS[ticket.category]} — {ticket.sector}
+          </h1>
+        </div>
         <TicketStatusBadge status={ticket.status} />
       </div>
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 rounded-md border border-gray-200 bg-white p-4 text-sm">
-        <div>
-          <dt className="text-gray-500">Solicitante</dt>
-          <dd className="font-medium">{ticket.requester_name}</dd>
-        </div>
-        <div>
-          <dt className="text-gray-500">Aberto em</dt>
-          <dd className="font-medium">{formatDate(ticket.created_at)}</dd>
-        </div>
-        <div>
-          <dt className="text-gray-500">Filial</dt>
-          <dd className="font-medium">{ticket.branch}</dd>
-        </div>
-        <div>
-          <dt className="text-gray-500">Setor</dt>
-          <dd className="font-medium">{ticket.sector}</dd>
-        </div>
-        <div>
-          <dt className="text-gray-500">Categoria</dt>
-          <dd className="font-medium">{TICKET_CATEGORY_LABELS[ticket.category]}</dd>
-        </div>
-        <div>
-          <dt className="text-gray-500">Prioridade</dt>
-          <dd className="font-medium">{TICKET_PRIORITY_LABELS[ticket.priority]}</dd>
-        </div>
-        <div>
-          <dt className="text-gray-500">Atribuído a</dt>
-          <dd className="font-medium">{ticket.assigned_to_name ?? "Ninguém ainda"}</dd>
-        </div>
-        <div className="col-span-2">
-          <dt className="text-gray-500">Descrição</dt>
-          <dd className="mt-1 whitespace-pre-wrap font-medium">{ticket.description}</dd>
-        </div>
-      </dl>
+      <div className="mt-6 grid gap-5 md:grid-cols-[1fr_280px]">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+          <h2 className="text-sm font-bold text-foreground">Descrição</h2>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+            {ticket.description}
+          </p>
 
-      <div className="mt-6">
-        <TicketDetailForm ticket={ticket} />
+          {ticket.resolution_note && (
+            <div className="mt-5 rounded-xl bg-emerald-50 p-4">
+              <h3 className="text-sm font-bold text-emerald-800">Nota de resolução</h3>
+              <p className="mt-1 whitespace-pre-wrap text-sm text-emerald-700">
+                {ticket.resolution_note}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <aside className="space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <Info label="Solicitante" value={ticket.requester_name} />
+            <Info label="Aberto em" value={formatDate(ticket.created_at)} />
+            <Info label="Filial" value={ticket.branch} />
+            <Info label="Setor" value={ticket.sector} />
+            <div className="mb-4">
+              <div className="text-xs text-muted-foreground">Prioridade</div>
+              <div className="mt-1.5">
+                <TicketPriorityBadge priority={ticket.priority} />
+              </div>
+            </div>
+            <Info label="Atribuído a" value={ticket.assigned_to_name ?? "Ninguém ainda"} />
+          </div>
+
+          <TicketDetailForm ticket={ticket} />
+        </aside>
       </div>
     </div>
   );

@@ -43,3 +43,10 @@ export async function requireAdminSession(): Promise<HubSession> {
   }
   return session;
 }
+
+export function getHubBaseUrl(): string {
+  return (process.env.HUB_LOGIN_URL ?? "https://hub.lojanovamix.com.br/login").replace(
+    /\/login\/?$/,
+    ""
+  );
+}

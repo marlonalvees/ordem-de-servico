@@ -1,5 +1,9 @@
 import { assignTicketToMe, updateTicketStatus } from "@/actions/tickets";
 import { TICKET_STATUS_LABELS, Ticket, TicketStatus } from "@/types/ticket";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { NativeSelect } from "@/components/ui/native-select";
 
 const STATUSES = Object.keys(TICKET_STATUS_LABELS) as TicketStatus[];
 
@@ -8,57 +12,49 @@ export function TicketDetailForm({ ticket }: { ticket: Ticket }) {
   const boundUpdate = updateTicketStatus.bind(null, ticket.id);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {!ticket.assigned_to_user_id && (
         <form action={boundAssign}>
-          <button
-            type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
+          <Button type="submit" className="w-full">
             Assumir para mim
-          </button>
+          </Button>
         </form>
       )}
 
-      <form action={boundUpdate} className="space-y-4 rounded-md border border-gray-200 p-4">
+      <form
+        action={boundUpdate}
+        className="space-y-4 rounded-2xl border border-border bg-card p-4 shadow-sm"
+      >
         <div>
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-            Status
-          </label>
-          <select
-            id="status"
-            name="status"
-            defaultValue={ticket.status}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm"
-          >
-            {STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {TICKET_STATUS_LABELS[status]}
-              </option>
-            ))}
-          </select>
+          <Label htmlFor="status">Status</Label>
+          <div className="mt-1.5">
+            <NativeSelect id="status" name="status" defaultValue={ticket.status}>
+              {STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {TICKET_STATUS_LABELS[status]}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
         </div>
 
         <div>
-          <label htmlFor="resolution_note" className="block text-sm font-medium text-gray-700">
-            Nota de resolução {" "}
-            <span className="font-normal text-gray-500">(obrigatória para marcar como Resolvido)</span>
-          </label>
-          <textarea
+          <Label htmlFor="resolution_note">
+            Nota de resolução{" "}
+            <span className="font-normal text-muted-foreground">(obrigatória para Resolvido)</span>
+          </Label>
+          <Textarea
             id="resolution_note"
             name="resolution_note"
             rows={4}
             defaultValue={ticket.resolution_note ?? ""}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm"
+            className="mt-1.5"
           />
         </div>
 
-        <button
-          type="submit"
-          className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-900"
-        >
+        <Button type="submit" variant="secondary" className="w-full">
           Salvar alterações
-        </button>
+        </Button>
       </form>
     </div>
   );
