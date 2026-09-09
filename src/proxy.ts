@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { HUB_TOKEN_COOKIE, parseHubPayload } from "@/types/hub-session";
+import { HUB_TOKEN_COOKIE, hasOsAccess, isAdmin, parseHubPayload } from "@/types/hub-session";
 
 // Next.js 16 renomeou middleware.ts -> proxy.ts (função `middleware` -> `proxy`).
 // Proxy roda em runtime Node.js por padrão, então dá pra usar `jsonwebtoken`
@@ -10,13 +10,17 @@ export function proxy(request: NextRequest) {
   const session = verifyToken(token);
 
   if (!session) {
-    const hubLoginUrl = process.env.HUB_LOGIN_URL ?? "https://lojanovamix.com.br/login";
+    const hubLoginUrl = process.env.HUB_LOGIN_URL ?? "https://hub.lojanovamix.com.br/login";
     const redirectUrl = new URL(hubLoginUrl);
     redirectUrl.searchParams.set("redirect", request.url);
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (request.nextUrl.pathname.startsWith("/painel") && session.role !== "admin") {
+  if (!hasOsAccess(session)) {
+    return NextResponse.redirect(new URL("/acesso-negado", request.url));
+  }
+
+  if (request.nextUrl.pathname.startsWith("/painel") && !isAdmin(session)) {
     return NextResponse.redirect(new URL("/acesso-negado", request.url));
   }
 
@@ -34,5 +38,5 @@ function verifyToken(token: string | undefined) {
 }
 
 export const config = {
-  matcher: ["/", "/painel/:path*"],
+  matcher: ["/", "/painel/:path*", "/meus-chamados"],
 };

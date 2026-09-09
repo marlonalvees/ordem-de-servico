@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { HUB_TOKEN_COOKIE } from "@/types/hub-session";
+import { HUB_TOKEN_COOKIE, HubSession } from "@/types/hub-session";
 
 // Busca o nome real do usuário logado via GET /users/me do hub, repassando
 // o mesmo token da sessão atual como Bearer. Se HUB_API_URL não estiver
@@ -26,4 +26,9 @@ export async function fetchHubUserName(): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+// Nome real do hub quando disponível, senão um fallback estável a partir do id.
+export async function resolveDisplayName(session: HubSession): Promise<string> {
+  return (await fetchHubUserName()) ?? `Usuário #${session.userId}`;
 }

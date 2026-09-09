@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getHubSession } from "@/lib/hub-auth";
-import { fetchHubUserName } from "@/lib/hub-users";
+import { resolveDisplayName } from "@/lib/hub-users";
 
 export default async function PainelLayout({
   children,
@@ -8,7 +8,7 @@ export default async function PainelLayout({
   children: React.ReactNode;
 }) {
   const session = await getHubSession();
-  const name = session ? (await fetchHubUserName()) ?? `Usuário #${session.userId}` : null;
+  const name = session ? await resolveDisplayName(session) : null;
 
   return (
     <div>
@@ -20,7 +20,7 @@ export default async function PainelLayout({
           <div className="flex items-center gap-4 text-sm text-gray-600">
             {name && <span>{name}</span>}
             <a
-              href={(process.env.HUB_LOGIN_URL ?? "https://lojanovamix.com.br/login").replace(/\/login\/?$/, "")}
+              href={(process.env.HUB_LOGIN_URL ?? "https://hub.lojanovamix.com.br/login").replace(/\/login\/?$/, "")}
               className="text-blue-600 hover:underline"
             >
               Voltar ao hub

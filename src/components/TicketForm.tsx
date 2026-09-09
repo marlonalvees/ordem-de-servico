@@ -10,20 +10,20 @@ import { HubBranch } from "@/types/hub-session";
 const CATEGORIES = Object.keys(TICKET_CATEGORY_LABELS) as TicketCategory[];
 const PRIORITIES = Object.keys(TICKET_PRIORITY_LABELS) as TicketPriority[];
 
-export function TicketForm({ branchs }: { branchs: HubBranch[] }) {
+export function TicketForm({
+  branchs,
+  requesterName,
+}: {
+  branchs: HubBranch[];
+  requesterName: string;
+}) {
   return (
     <form action={createTicket} className="space-y-5">
       <div>
-        <label htmlFor="requester_name" className="block text-sm font-medium text-gray-700">
-          Seu nome
-        </label>
-        <input
-          id="requester_name"
-          name="requester_name"
-          type="text"
-          required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-        />
+        <span className="block text-sm font-medium text-gray-700">Abrindo como</span>
+        <p className="mt-1 rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-700">
+          {requesterName}
+        </p>
       </div>
 
       <div>

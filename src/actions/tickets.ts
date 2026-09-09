@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdminSession, requireHubSession } from "@/lib/hub-auth";
-import { fetchHubUserName } from "@/lib/hub-users";
+import { resolveDisplayName } from "@/lib/hub-users";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import {
   TicketCategory,
@@ -20,8 +20,8 @@ function readString(formData: FormData, key: string): string {
 
 export async function createTicket(formData: FormData) {
   const session = await requireHubSession();
+  const requesterName = await resolveDisplayName(session);
 
-  const requesterName = readString(formData, "requester_name");
   const branch = readString(formData, "branch");
   const sector = readString(formData, "sector");
   const category = readString(formData, "category") as TicketCategory;
@@ -54,7 +54,7 @@ export async function createTicket(formData: FormData) {
 
 export async function assignTicketToMe(ticketId: string, _formData: FormData) {
   const session = await requireAdminSession();
-  const name = (await fetchHubUserName()) ?? `Usuário #${session.userId}`;
+  const name = await resolveDisplayName(session);
 
   const { error } = await getSupabaseAdmin()
     .from("tickets")

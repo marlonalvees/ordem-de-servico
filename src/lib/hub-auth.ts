@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import {
   HUB_TOKEN_COOKIE,
   HubSession,
+  isAdmin,
   parseHubPayload,
 } from "@/types/hub-session";
 
@@ -37,7 +38,7 @@ export async function requireHubSession(): Promise<HubSession> {
 
 export async function requireAdminSession(): Promise<HubSession> {
   const session = await requireHubSession();
-  if (session.role !== "admin") {
+  if (!isAdmin(session)) {
     throw new Error("Usuário não tem permissão de T.I. para essa ação.");
   }
   return session;

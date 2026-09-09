@@ -6,7 +6,13 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleString("pt-BR");
 }
 
-export function TicketList({ tickets }: { tickets: Ticket[] }) {
+export function TicketList({
+  tickets,
+  linkToDetail = true,
+}: {
+  tickets: Ticket[];
+  linkToDetail?: boolean;
+}) {
   if (tickets.length === 0) {
     return <p className="text-sm text-gray-500">Nenhum chamado encontrado.</p>;
   }
@@ -29,9 +35,13 @@ export function TicketList({ tickets }: { tickets: Ticket[] }) {
           {tickets.map((ticket) => (
             <tr key={ticket.id} className="hover:bg-gray-50">
               <td className="px-4 py-2">
-                <Link href={`/painel/${ticket.id}`} className="text-blue-600 hover:underline">
-                  {formatDate(ticket.created_at)}
-                </Link>
+                {linkToDetail ? (
+                  <Link href={`/painel/${ticket.id}`} className="text-blue-600 hover:underline">
+                    {formatDate(ticket.created_at)}
+                  </Link>
+                ) : (
+                  formatDate(ticket.created_at)
+                )}
               </td>
               <td className="px-4 py-2">{ticket.requester_name}</td>
               <td className="px-4 py-2">{ticket.branch}</td>
