@@ -49,7 +49,7 @@ export default async function PainelPage({
       label: "Total de chamados",
       value: allTickets.length,
       icon: TicketCheck,
-      tone: "violet" as const,
+      tone: "teal" as const,
     },
   ];
 
@@ -66,7 +66,9 @@ export default async function PainelPage({
       <div className="mt-8">
         <TicketFilters status={status} branch={branch} sector={sector} />
         {error ? (
-          <p className="text-sm text-destructive">Erro ao carregar chamados: {error.message}</p>
+          <div className="rounded-lg bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+            Erro ao carregar chamados: {error.message}
+          </div>
         ) : (
           <TicketList tickets={filtered} />
         )}

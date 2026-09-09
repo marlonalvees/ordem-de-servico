@@ -23,7 +23,7 @@ export function TicketDetailForm({ ticket }: { ticket: Ticket }) {
 
       <form
         action={boundUpdate}
-        className="space-y-4 rounded-2xl border border-border bg-card p-4 shadow-sm"
+        className="space-y-4 rounded-xl border border-border bg-card p-4 shadow-sm"
       >
         <div>
           <Label htmlFor="status">Status</Label>

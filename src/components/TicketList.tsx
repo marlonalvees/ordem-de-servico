@@ -15,14 +15,14 @@ export function TicketList({
 }) {
   if (tickets.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
+      <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
         Nenhum chamado encontrado.
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[880px] text-left text-sm">
           <thead className="bg-muted text-xs font-medium tracking-wide text-muted-foreground uppercase">

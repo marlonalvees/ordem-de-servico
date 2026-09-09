@@ -56,7 +56,7 @@ export default async function TicketDetailPage({
       </div>
 
       <div className="mt-6 grid gap-5 md:grid-cols-[1fr_280px]">
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <h2 className="text-sm font-bold text-foreground">Descrição</h2>
           <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
             {ticket.description}
@@ -73,7 +73,7 @@ export default async function TicketDetailPage({
         </div>
 
         <aside className="space-y-5">
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
             <Info label="Solicitante" value={ticket.requester_name} />
             <Info label="Aberto em" value={formatDate(ticket.created_at)} />
             <Info label="Filial" value={ticket.branch} />

@@ -17,7 +17,7 @@ export default async function AbrirChamadoPage() {
           Preencha os dados abaixo para registrar sua solicitação de suporte.
         </p>
 
-        <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="mt-8 rounded-xl border border-border bg-card p-6 shadow-sm">
           <TicketForm branchs={session.branchs} requesterName={requesterName} />
         </div>
       </main>

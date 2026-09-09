@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 const TONE_CLASSES = {
   amber: "bg-amber-50 text-amber-700",
   blue: "bg-blue-50 text-blue-700",
-  violet: "bg-violet-50 text-violet-700",
+  teal: "bg-teal/10 text-teal",
   green: "bg-emerald-50 text-emerald-700",
 } as const;
 
@@ -19,7 +19,7 @@ export function StatCard({
   tone: keyof typeof TONE_CLASSES;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-muted-foreground">{label}</p>

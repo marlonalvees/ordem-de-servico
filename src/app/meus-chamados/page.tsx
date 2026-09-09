@@ -27,7 +27,9 @@ export default async function MeusChamadosPage() {
 
         <div className="mt-8">
           {error ? (
-            <p className="text-sm text-destructive">Erro ao carregar chamados: {error.message}</p>
+            <div className="rounded-lg bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+              Erro ao carregar chamados: {error.message}
+            </div>
           ) : (
             <TicketSearch tickets={(data ?? []) as Ticket[]} />
           )}

@@ -19,7 +19,7 @@ export function TicketFilters({
     <form
       method="get"
       action="/painel"
-      className="mb-6 flex flex-wrap items-end gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm"
+      className="mb-6 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
     >
       <div className="w-40">
         <Label htmlFor="status" className="text-xs text-muted-foreground">

@@ -37,7 +37,7 @@ export function AdminNav({ variant = "sidebar" }: { variant?: "sidebar" | "mobil
   }
 
   return (
-    <nav className="space-y-1 p-4">
+    <nav className="mt-4 flex flex-1 flex-col gap-1 overflow-y-auto px-4">
       {ITEMS.map((item) => {
         const active = pathname === "/painel" && status === (item.status ?? "");
         const Icon = item.icon;
@@ -45,8 +45,10 @@ export function AdminNav({ variant = "sidebar" }: { variant?: "sidebar" | "mobil
           <Link
             key={item.label}
             href={item.href}
-            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${
-              active ? "bg-white text-primary shadow-sm" : "text-white/90 hover:bg-white/15"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+              active
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-primary/10 hover:text-primary"
             }`}
           >
             <Icon size={18} />
